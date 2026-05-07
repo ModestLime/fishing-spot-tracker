@@ -41,6 +41,7 @@ import net.runelite.api.events.GameTick;
 import net.runelite.api.events.NpcDespawned;
 import net.runelite.api.events.NpcSpawned;
 import net.runelite.client.Notifier;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -74,6 +75,9 @@ public class FishingSpotTrackerPlugin extends Plugin
 	@Getter
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private FishingSpotTrackerConfig config;
@@ -117,7 +121,7 @@ public class FishingSpotTrackerPlugin extends Plugin
 	{
 		overlayManager.add(overlay);
 		overlayManager.add(minimapOverlay);
-		scanExistingSpots();
+		clientThread.invoke(this::scanExistingSpots);
 	}
 
 	@Override
